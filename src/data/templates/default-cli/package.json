@@ -1,0 +1,17 @@
+{
+    "name": "default-cli",
+    "description": "Made with kumbocli.",
+    "author": "Jonas Schmitt",
+    "license": "ISC",
+    "main": "index.js",
+    "bin": "bin/default-cli",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "cli",
+        "create",
+        "kumboleijo",
+        "kumbocli"
+    ]
+}
