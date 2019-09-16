@@ -5,23 +5,76 @@ const glob = require('glob');
 const { execFile } = require('child_process');
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
-
 const git = require('simple-git');
-
 const xa = require('xa');
 
 const cwd = process.cwd();
 
+let templatePath;
+let destPath;
+let configFilePath;
+let packageJson;
+
+async function kumbocli(options) {
+    xa.info('hello kumbocli');
+
+    xa.info('processing inputs...');
+    await processPathAndConfigFile(options);
+    xa.success('processing inputs');
+
+    // create folder
+    xa.info('creating folder...');
+    if (!fs.existsSync(destPath)) fs.mkdirSync(destPath), xa.success(`created folder ${destPath}`);
+    else xa.warning('folder already exists - all files will be overwritten!');
+
+    // copy template files
+    xa.info('copy template files...');
+    await copyTemplateFiles(templatePath, destPath);
+
+    // process.exit(1);
+
+    // modify all .js files to fit the correct program name
+    await renameSymbols(destPath);
+
+    // git init
+    git(destPath).init();
+}
+
+async function processPathAndConfigFile(options) {
+    templatePath = path.resolve(__dirname + '/' + options.template);
+    configFilePath = path.resolve(templatePath + '/package.json');
+
+    let packageFile = await readFile(configFilePath);
+
+    packageJson = JSON.parse(packageFile);
+
+    // modify package.json properties
+    packageJson.name = options.name == '' ? packageJson.name : options.name;
+    packageJson.bin = options.name == '' ? 'bin/' + packageJson.name : 'bin/' + options.name;
+    packageJson.description = options.description == '' ? packageJson.description : options.description;
+    packageJson.author = options.author == '' ? packageJson.author : options.author;
+
+    destPath = path.resolve(packageJson.name);
+}
+
 async function copyTemplateFiles(src, dest) {
     fs.copySync(src, dest, {
         filter: (src, dest) => {
+            xa.success('copy file: ');
             if (path.basename(src) == 'package.json') return false;
             else return true;
         }
     });
+
+    // copy modified package.json to destPath
+    await writeFile(destPath + '/package.json', JSON.stringify(packageJson));
+
+    // rename excecutable
+    fs.renameSync(destPath + '/bin/run', destPath + `/bin/${packageJson.name}`);
 }
 
-async function rename(dir) {
+async function renameSymbols(dir) {
+    // find all *.js files and rename the variables in that file
     glob(`${dir}/**/*.js`, (err, jsFiles) => {
         jsFiles.forEach(jsFile => {
             console.log(jsFile);
@@ -31,42 +84,6 @@ async function rename(dir) {
             });
         });
     });
-    // let files = fs.readdirSync(dir);
-    // console.log(files);
-
-    // let jsFiles = files.filter(file => path.extname(file) == '.js');
-    // jsFiles.forEach(jsFile => {
-    //     console.log(jsFile);
-    // });
 }
 
-async function kumbocli(options) {
-    xa.info('hello kumbocli');
-
-    let templatePath = path.resolve(__dirname + '/' + options.template);
-    let config = path.resolve(templatePath + '/package.json');
-
-    let package = await readFile(config);
-    let packageJson = JSON.parse(package);
-
-    packageJson.name = options.name == '' ? packageJson.name : options.name;
-    packageJson.bin = options.name == '' ? 'bin/' + packageJson.name : 'bin/' + options.name;
-    packageJson.description = options.description == '' ? packageJson.description : options.description;
-    packageJson.author = options.author == '' ? packageJson.author : options.author;
-
-    // console.log(packageJson);
-
-    // create folder
-    if (!fs.existsSync(packageJson.name)) fs.mkdirSync(packageJson.name), xa.success(`created folder ${packageJson.name}`);
-
-    // copy template files
-    await copyTemplateFiles(templatePath, path.resolve(packageJson.name));
-
-    // copy modified package.json
-    await writeFile(path.resolve(packageJson.name) + '/package.json', JSON.stringify(packageJson));
-
-    await rename(path.resolve(packageJson.name));
-    // git init
-    git(path.resolve(packageJson.name)).init();
-}
 module.exports = kumbocli;

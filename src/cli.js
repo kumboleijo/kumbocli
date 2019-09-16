@@ -39,7 +39,9 @@ function cli(argv) {
             }
         ])
         .then(answers => {
+            console.log('\n');
             console.log(answers);
+            console.log('\n');
             kumbocli(answers);
         });
 }
