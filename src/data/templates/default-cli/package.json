@@ -1,5 +1,5 @@
 {
-    "name": "default-cli",
+    "name": "defaultcli",
     "description": "Made with kumbocli.",
     "author": "Jonas Schmitt",
     "license": "ISC",
@@ -13,5 +13,12 @@
         "create",
         "kumboleijo",
         "kumbocli"
-    ]
+    ],
+    "dependencies": {
+        "commander": "^3.0.1",
+        "fs-extra": "^8.1.0",
+        "glob": "^7.1.4",
+        "inquirer": "^7.0.0",
+        "xa": "^2.3.0"
+    }
 }

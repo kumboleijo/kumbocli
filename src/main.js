@@ -20,7 +20,7 @@ async function kumbocli(options) {
 
     xa.info('processing inputs...');
     await processPathAndConfigFile(options);
-    xa.success('processing inputs');
+    xa.success('inputs processed');
 
     // create folder
     xa.info('creating folder...');
@@ -30,14 +30,15 @@ async function kumbocli(options) {
     // copy template files
     xa.info('copy template files...');
     await copyTemplateFiles(templatePath, destPath);
-
-    // process.exit(1);
+    xa.success('copied template files');
 
     // modify all .js files to fit the correct program name
     await renameSymbols(destPath);
 
     // git init
     git(destPath).init();
+
+    xa.success('your project is all setup and ready to go!');
 }
 
 async function processPathAndConfigFile(options) {
@@ -60,7 +61,7 @@ async function processPathAndConfigFile(options) {
 async function copyTemplateFiles(src, dest) {
     fs.copySync(src, dest, {
         filter: (src, dest) => {
-            xa.success('copy file: ');
+            // xa.info('copying file: ' + path.basename(src));
             if (path.basename(src) == 'package.json') return false;
             else return true;
         }
@@ -71,15 +72,17 @@ async function copyTemplateFiles(src, dest) {
 
     // rename excecutable
     fs.renameSync(destPath + '/bin/run', destPath + `/bin/${packageJson.name}`);
+
+    // doesn't work currently!
+    fs.chmodSync(`/bin/${packageJson.name}`, '755');
 }
 
 async function renameSymbols(dir) {
     // find all *.js files and rename the variables in that file
     glob(`${dir}/**/*.js`, (err, jsFiles) => {
         jsFiles.forEach(jsFile => {
-            console.log(jsFile);
             readFile(jsFile, 'utf-8').then(jsFileString => {
-                let jsFileStringModified = jsFileString.replace(/\$REPLACEME/g, 'test');
+                let jsFileStringModified = jsFileString.replace(/\$REPLACEME/g, packageJson.name);
                 writeFile(jsFile, jsFileStringModified).then(res => {}, err => {});
             });
         });
