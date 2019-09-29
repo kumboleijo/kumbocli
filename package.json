@@ -5,7 +5,9 @@
   "main": "index.js",
   "bin": "bin/kumbocli",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm version patch",
+    "publish": "git push && git push --tags"
   },
   "keywords": [
     "cli",
