@@ -1,26 +1,27 @@
 {
-    "name": "kumbocli",
-    "version": "0.0.1",
-    "description": "Create node CLI apps in seconds - with templates.",
-    "main": "index.js",
-    "bin": "bin/kumbocli",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [
-        "cli",
-        "create",
-        "kumboleijo",
-        "kumbocli"
-    ],
-    "author": "Jonas Schmitt",
-    "license": "ISC",
-    "dependencies": {
-        "commander": "^3.0.1",
-        "fs-extra": "^8.1.0",
-        "glob": "^7.1.4",
-        "inquirer": "^7.0.0",
-        "simple-git": "^1.126.0",
-        "xa": "^2.3.0"
-    }
+  "name": "kumbocli",
+  "version": "0.0.1",
+  "description": "Create node CLI apps in seconds - with templates.",
+  "main": "index.js",
+  "bin": "bin/kumbocli",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "create",
+    "kumboleijo",
+    "kumbocli"
+  ],
+  "author": "Jonas Schmitt <jonas.schmitt@me.com>",
+  "license": "ISC",
+  "dependencies": {
+    "camelcase": "^5.3.1",
+    "commander": "^3.0.1",
+    "fs-extra": "^8.1.0",
+    "glob": "^7.1.4",
+    "inquirer": "^7.0.0",
+    "simple-git": "^1.126.0",
+    "xa": "^2.3.0"
+  }
 }

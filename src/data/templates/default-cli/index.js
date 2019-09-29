@@ -1,3 +1,7 @@
-const $REPLACEME = require('./src/main');
+/*
+ * Official kumbocli template.
+ */
 
-module.exports = $REPLACEME;
+const REPLACEMENAMECAMELCASE = require('./src/main');
+
+module.exports = REPLACEMENAMECAMELCASE;
