@@ -2,6 +2,12 @@
 
 Create node CLI applications with ease.
 
+## Install
+
+```
+npm i -g kumbocli
+```
+
 ## Usage
 
 ```
@@ -11,9 +17,9 @@ Create node CLI apps in seconds - with templates.
 
 Options:
   -V, --version              output the version number
-  -n, --name <NAME>          set the name of the new CLI app (default: "")
-  -d, --description <DESC>   set the description (default: "")
-  -a, --author               set the author
+  -n, --name <NAME>          set the name of the new CLI app (default: "my-kumbocli-app")
+  -d, --description <DESC>   set the description (default: "Made with kumbocli.")
+  -a, --author <AUTHOR>      set the author (default: "Kumboleijo")
   -t, --template <TEMPLATE>  set the directory of the template (default: "data/templates/default-cli")
   -h, --help                 output usage information
 ```
