@@ -76,6 +76,8 @@ async function copyTemplateFiles(src, dest) {
 }
 
 async function renameSymbols(dir) {
+  // check out https://www.npmjs.com/package/replace
+
   // find all *.js files and rename the variables in that file
   glob(`${dir}/**/*.{js,md}`, (err, files) => {
     files.forEach(file => {
